@@ -2,94 +2,149 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Stream Overlay</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Montserrat:wght@800&display=swap" rel="stylesheet">
-    
+    <title>Overlay – FAKI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
     <style>
-        /* Alap beállítások, hogy a háttér átlátszó legyen OBS-ben */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            margin: 0;
-            padding: 0;
-            background-color: transparent; /* Fontos: Átlátszó háttér */
+            background: transparent;
             display: flex;
-            justify-content: center; /* Középre igazítás */
+            justify-content: center;
             align-items: center;
             height: 100vh;
             overflow: hidden;
-            font-family: 'Montserrat', sans-serif;
         }
 
-        /* A fő doboz stílusa */
-        .overlay-container {
+        .glow-wrap {
             position: relative;
-            background: rgba(0, 0, 0, 0.7); /* Félig átlátszó fekete háttér */
-            padding: 15px 40px;
-            border-radius: 15px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2); /* Enyhe kék ragyogás */
+            border-radius: 12px;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .glow-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 14px;
+            box-shadow: 0 0 20px 5px rgba(168, 85, 247, 0.4),
+                        0 0 45px 10px rgba(168, 85, 247, 0.15);
+            animation: glow-pulse 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .panel {
+            position: relative;
+            background: rgba(10, 10, 18, 0.95);
+            border: 1.5px solid rgba(168, 85, 247, 0.4);
+            border-radius: 12px;
+            padding: 12px 22px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            transform: skewX(-10deg); /* Dőlés a dinamikus hatásért */
-            backdrop-filter: blur(5px); /* Homályosítás a szöveg mögött */
+            gap: 0;
+            overflow: hidden;
         }
 
-        /* "USE CODE" szöveg */
-        .text-label {
-            font-size: 32px;
-            color: #FFD700; /* Arany sárga */
+        /* "USE CODE:" — white, clean */
+        .label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 28px;
             font-weight: 800;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            text-shadow: 2px 2px 0px #000;
-            transform: skewX(10deg); /* Visszadöntés, hogy olvasható legyen */
+            color: rgba(255,255,255,0.9);
+            margin-right: 12px;
+            line-height: 1;
         }
 
-        /* "FAKI" kód stílusa + Animáció */
-        .code-name {
-            font-family: 'Orbitron', sans-serif; /* Sci-fi font */
-            font-size: 45px;
-            font-weight: 900;
-            color: #00FFFF; /* Cián kék */
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF; /* Neon ragyogás */
-            transform: skewX(10deg);
-            animation: pulse-glow 2s infinite alternate; /* Animáció */
+        /* FAKI — orange/amber gradient */
+        .code {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 44px;
+            letter-spacing: 6px;
+            line-height: 1;
+            background: linear-gradient(135deg, #ff9a3c 0%, #ff6b35 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 8px rgba(255, 120, 50, 0.6));
+            position: relative;
+            overflow: hidden;
+            animation: code-breathe 3s ease-in-out infinite;
         }
 
-        /* #AD stílusa */
-        .ad-tag {
-            font-size: 16px;
-            background: #FF0055;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-            transform: skewX(10deg);
-            margin-left: 5px;
-            box-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+        .code::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            transform: skewX(-10deg);
+            animation: shimmer 4s ease-in-out infinite;
         }
 
-        /* Animáció definíciója */
-        @keyframes pulse-glow {
-            0% {
-                text-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF;
-                transform: skewX(10deg) scale(1);
-            }
-            100% {
-                text-shadow: 0 0 20px #00FFFF, 0 0 40px #00FFFF, 0 0 60px #00FFFF;
-                transform: skewX(10deg) scale(1.05); /* Kicsit megnő */
-            }
+        /* #AD — purple to match border */
+        .ad {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #ffffff;
+            background: #7c3aed;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-left: 14px;
+            box-shadow: 0 0 10px rgba(124,58,237,0.6);
+            animation: ad-pulse 2.5s ease-in-out infinite;
+        }
+
+        /* Bottom sliding line */
+        .line {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #a855f7, #ff6b35, #a855f7, transparent);
+            background-size: 200% 100%;
+            animation: line-slide 2.5s linear infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-8px); }
+        }
+        @keyframes glow-pulse {
+            0%, 100% { box-shadow: 0 0 20px 5px rgba(168,85,247,0.4), 0 0 45px 10px rgba(168,85,247,0.15); }
+            50%       { box-shadow: 0 0 30px 8px rgba(168,85,247,0.6), 0 0 60px 15px rgba(168,85,247,0.25); }
+        }
+        @keyframes code-breathe {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(255,120,50,0.6)); }
+            50%       { filter: drop-shadow(0 0 16px rgba(255,120,50,0.9)); }
+        }
+        @keyframes shimmer {
+            0%   { left: -100%; opacity: 0; }
+            10%  { opacity: 1; }
+            45%  { left: 130%; opacity: 0; }
+            100% { left: 130%; opacity: 0; }
+        }
+        @keyframes line-slide {
+            0%   { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        @keyframes ad-pulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(124,58,237,0.6); }
+            50%       { box-shadow: 0 0 20px rgba(124,58,237,0.9); }
         }
     </style>
 </head>
 <body>
 
-    <div class="overlay-container">
-        <span class="text-label">USE CODE:</span>
-        <span class="code-name">FAKI</span>
-        <span class="ad-tag">#AD</span>
+<div class="glow-wrap">
+    <div class="panel">
+        <div class="line"></div>
+        <span class="label">USE CODE:</span>
+        <div class="code">FAKI</div>
+        <div class="ad">#AD</div>
     </div>
+</div>
 
 </body>
 </html>
