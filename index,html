@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Stream Overlay</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Alap beállítások, hogy a háttér átlátszó legyen OBS-ben */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: transparent; /* Fontos: Átlátszó háttér */
+            display: flex;
+            justify-content: center; /* Középre igazítás */
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* A fő doboz stílusa */
+        .overlay-container {
+            position: relative;
+            background: rgba(0, 0, 0, 0.7); /* Félig átlátszó fekete háttér */
+            padding: 15px 40px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2); /* Enyhe kék ragyogás */
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transform: skewX(-10deg); /* Dőlés a dinamikus hatásért */
+            backdrop-filter: blur(5px); /* Homályosítás a szöveg mögött */
+        }
+
+        /* "USE CODE" szöveg */
+        .text-label {
+            font-size: 32px;
+            color: #FFD700; /* Arany sárga */
+            font-weight: 800;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0px #000;
+            transform: skewX(10deg); /* Visszadöntés, hogy olvasható legyen */
+        }
+
+        /* "FAKI" kód stílusa + Animáció */
+        .code-name {
+            font-family: 'Orbitron', sans-serif; /* Sci-fi font */
+            font-size: 45px;
+            font-weight: 900;
+            color: #00FFFF; /* Cián kék */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF; /* Neon ragyogás */
+            transform: skewX(10deg);
+            animation: pulse-glow 2s infinite alternate; /* Animáció */
+        }
+
+        /* #AD stílusa */
+        .ad-tag {
+            font-size: 16px;
+            background: #FF0055;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            transform: skewX(10deg);
+            margin-left: 5px;
+            box-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+        }
+
+        /* Animáció definíciója */
+        @keyframes pulse-glow {
+            0% {
+                text-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF;
+                transform: skewX(10deg) scale(1);
+            }
+            100% {
+                text-shadow: 0 0 20px #00FFFF, 0 0 40px #00FFFF, 0 0 60px #00FFFF;
+                transform: skewX(10deg) scale(1.05); /* Kicsit megnő */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay-container">
+        <span class="text-label">USE CODE:</span>
+        <span class="code-name">FAKI</span>
+        <span class="ad-tag">#AD</span>
+    </div>
+
+</body>
+</html>
